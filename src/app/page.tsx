@@ -7,7 +7,7 @@ export default function Home() {
   const { isHorrorTheme } = useApp()
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-0">
       <h1 className={cn(
         "text-4xl font-bold mb-8",
         isHorrorTheme ? "text-red-600" : "text-gray-900"

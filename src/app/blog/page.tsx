@@ -82,7 +82,7 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-0">
       <h1 className={cn(
         "text-4xl font-bold mb-8",
         isHorrorTheme ? "text-red-600" : "text-gray-900"
@@ -159,7 +159,7 @@ export default function BlogPage() {
               )}>
                 問題{q.id}: {q.question}
               </h3>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {q.options.map((option, index) => {
                   const isAnswered = answeredQuestions.includes(q.id)
                   const result = quizResults[q.id]
@@ -235,7 +235,7 @@ export default function BlogPage() {
             )}>
               山田 太郎
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div className={cn(
                 "aspect-square bg-gray-200 rounded-lg flex items-center justify-center",
                 isHorrorTheme && "bg-red-900/20"
@@ -275,7 +275,7 @@ export default function BlogPage() {
             )}>
               佐藤 花子
             </h3>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
               <div className={cn(
                 "aspect-square bg-gray-200 rounded-lg flex items-center justify-center",
                 isHorrorTheme && "bg-red-900/20"
