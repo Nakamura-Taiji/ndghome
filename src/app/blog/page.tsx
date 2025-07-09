@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useApp } from '@/contexts/app-context'
 import { cn } from '@/lib/utils'
 import { Users, Trophy, Eye } from 'lucide-react'
+import { ImageWithFallback } from '@/components/image-with-fallback'
 
 const quizQuestions = [
   {
@@ -236,26 +237,18 @@ export default function BlogPage() {
               山田 太郎
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div className={cn(
-                "aspect-square bg-gray-200 rounded-lg flex items-center justify-center",
-                isHorrorTheme && "bg-red-900/20"
-              )}>
-                <span className={cn(
-                  isHorrorTheme ? "text-red-400" : "text-gray-500"
-                )}>
-                  顔写真
-                </span>
-              </div>
-              <div className={cn(
-                "aspect-square bg-gray-200 rounded-lg flex items-center justify-center",
-                isHorrorTheme && "bg-red-900/20"
-              )}>
-                <span className={cn(
-                  isHorrorTheme ? "text-red-400" : "text-gray-500"
-                )}>
-                  趣味: ゴルフ
-                </span>
-              </div>
+              <ImageWithFallback 
+                src="/otoko.jpg" 
+                alt="山田太郎" 
+                fallbackText="山田太郎"
+                isHorrorTheme={isHorrorTheme}
+              />
+              <ImageWithFallback 
+                src="/goif.jpg" 
+                alt="趣味: ゴルフ" 
+                fallbackText="趣味: ゴルフ"
+                isHorrorTheme={isHorrorTheme}
+              />
             </div>
             <p className={cn(
               isHorrorTheme ? "text-gray-300" : "text-gray-600"
@@ -276,25 +269,19 @@ export default function BlogPage() {
               佐藤 花子
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div className={cn(
-                "aspect-square bg-gray-200 rounded-lg flex items-center justify-center",
-                isHorrorTheme && "bg-red-900/20"
-              )}>
-                <span className={cn(
-                  isHorrorTheme ? "text-red-400" : "text-gray-500"
-                )}>
-                  顔写真
-                </span>
-              </div>
-              <div className={cn(
-                "aspect-square bg-gray-200 rounded-lg flex items-center justify-center relative",
-                isHorrorTheme && "bg-red-900/20"
-              )}>
-                <span className={cn(
-                  isHorrorTheme ? "text-red-400" : "text-gray-500"
-                )}>
-                  趣味: {showNightWalk ? '夜の散歩' : '昼の散歩'}
-                </span>
+              <ImageWithFallback 
+                src="/onna.jpg" 
+                alt="佐藤花子" 
+                fallbackText="佐藤花子"
+                isHorrorTheme={isHorrorTheme}
+              />
+              <div className="relative">
+                <ImageWithFallback 
+                  src={showNightWalk ? "/yoru.jpg" : "/hiru.jpg"}
+                  alt={`趣味: ${showNightWalk ? '夜の散歩' : '昼の散歩'}`}
+                  fallbackText={`趣味: ${showNightWalk ? '夜の散歩' : '昼の散歩'}`}
+                  isHorrorTheme={isHorrorTheme}
+                />
                 {showNightWalk && (
                   <button
                     onClick={handleSecretButtonClick}
