@@ -14,6 +14,8 @@ interface AppContextType {
   setIsHorrorTheme: (theme: boolean) => void
   showNightWalk: boolean
   setShowNightWalk: (show: boolean) => void
+  showOmatsuAnimation: boolean
+  setShowOmatsuAnimation: (show: boolean) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -24,6 +26,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [showRecruitment, setShowRecruitment] = useState(false)
   const [isHorrorTheme, setIsHorrorTheme] = useState(false)
   const [showNightWalk, setShowNightWalk] = useState(false)
+  const [showOmatsuAnimation, setShowOmatsuAnimation] = useState(false)
 
   useEffect(() => {
     // すべての状態をリセット（サイト訪問のたびに初期化）
@@ -32,6 +35,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setShowRecruitment(false)
     setIsHorrorTheme(false)
     setShowNightWalk(false)
+    setShowOmatsuAnimation(false)
     
     // ホラーテーマのクラスを削除
     document.documentElement.classList.remove('horror-theme')
@@ -40,6 +44,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (purchases.includes('履歴書') && purchases.includes('ボールペン')) {
       setShowRecruitment(true)
+    }
+    if (purchases.includes('うちわ')) {
+      setShowOmatsuAnimation(true)
     }
   }, [purchases])
 
@@ -83,7 +90,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       isHorrorTheme,
       setIsHorrorTheme,
       showNightWalk,
-      setShowNightWalk
+      setShowNightWalk,
+      showOmatsuAnimation,
+      setShowOmatsuAnimation
     }}>
       {children}
     </AppContext.Provider>

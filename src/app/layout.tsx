@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Sidebar } from '@/components/sidebar'
 import { AppProvider } from '@/contexts/app-context'
+import { OmatsuOverlay } from '@/components/omatsu-overlay'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,6 +27,7 @@ export default function RootLayout({
               {children}
             </main>
           </div>
+          <OmatsuOverlay />
         </AppProvider>
       </body>
     </html>
