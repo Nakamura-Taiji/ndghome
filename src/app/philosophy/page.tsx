@@ -2,9 +2,88 @@
 
 import { useApp } from '@/contexts/app-context'
 import { cn } from '@/lib/utils'
+import { useState, useRef } from 'react'
 
 export default function PhilosophyPage() {
   const { isHorrorTheme } = useApp()
+  const [isDragging, setIsDragging] = useState(false)
+  const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 })
+  const [showGlasses, setShowGlasses] = useState(true)
+  const [showMessage, setShowMessage] = useState(false)
+  const dragRef = useRef<HTMLDivElement>(null)
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!isHorrorTheme) return
+    setIsDragging(true)
+    const rect = dragRef.current?.getBoundingClientRect()
+    if (rect) {
+      setDragPosition({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top
+      })
+    }
+  }
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || !isHorrorTheme) return
+    e.preventDefault()
+    const container = dragRef.current?.parentElement
+    if (container && dragRef.current) {
+      const containerRect = container.getBoundingClientRect()
+      const newX = e.clientX - containerRect.left - dragPosition.x
+      const newY = e.clientY - containerRect.top - dragPosition.y
+      
+      dragRef.current.style.transform = `translate(${newX}px, ${newY}px)`
+      dragRef.current.style.position = 'relative'
+      dragRef.current.style.zIndex = '10'
+    }
+  }
+
+  const handleMouseUp = () => {
+    setIsDragging(false)
+  }
+
+  // タッチイベント用のハンドラー
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (!isHorrorTheme) return
+    setIsDragging(true)
+    const touch = e.touches[0]
+    const rect = dragRef.current?.getBoundingClientRect()
+    if (rect) {
+      setDragPosition({
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+      })
+    }
+  }
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!isDragging || !isHorrorTheme) return
+    e.preventDefault()
+    const touch = e.touches[0]
+    const container = dragRef.current?.parentElement
+    if (container && dragRef.current) {
+      const containerRect = container.getBoundingClientRect()
+      const newX = touch.clientX - containerRect.left - dragPosition.x
+      const newY = touch.clientY - containerRect.top - dragPosition.y
+      
+      dragRef.current.style.transform = `translate(${newX}px, ${newY}px)`
+      dragRef.current.style.position = 'relative'
+      dragRef.current.style.zIndex = '10'
+    }
+  }
+
+  const handleTouchEnd = () => {
+    setIsDragging(false)
+  }
+
+  const handleGlassesClick = () => {
+    setShowGlasses(false)
+    setShowMessage(true)
+    setTimeout(() => {
+      setShowMessage(false)
+    }, 1000)
+  }
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -63,22 +142,46 @@ export default function PhilosophyPage() {
           </p>
         </div>
         
-        <div className={cn(
-          "p-6 rounded-lg text-center",
-          isHorrorTheme ? "bg-red-900/20 border border-red-600" : "bg-green-50"
-        )}>
-          <h3 className={cn(
-            "text-xl font-semibold mb-3",
-            isHorrorTheme ? "text-red-400" : "text-green-800"
-          )}>
-            誠実
-          </h3>
-          <p className={cn(
-            isHorrorTheme ? "text-gray-300" : "text-gray-600"
-          )}>
-            嘘偽りのない
-            真摩な姿勢で
-          </p>
+        <div className="relative">
+          <div 
+            ref={dragRef}
+            className={cn(
+              "p-6 rounded-lg text-center transition-all duration-200 relative",
+              isHorrorTheme ? "bg-red-900/20 border border-red-600 cursor-move z-10" : "bg-green-50",
+              isDragging && "shadow-2xl scale-105 z-20"
+            )}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
+            <h3 className={cn(
+              "text-xl font-semibold mb-3",
+              isHorrorTheme ? "text-red-400" : "text-green-800"
+            )}>
+              誠実
+            </h3>
+            <p className={cn(
+              isHorrorTheme ? "text-gray-300" : "text-gray-600"
+            )}>
+              嘘偽りのない
+              真摩な姿勢で
+            </p>
+          </div>
+          
+          {/* メガネアイコン - 誠実欄の後ろに隠れている */}
+          {isHorrorTheme && showGlasses && (
+            <div 
+              className="absolute top-6 left-6 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors z-0"
+              onClick={handleGlassesClick}
+              title="メガネを取る"
+            >
+              <span className="text-white text-lg">👓</span>
+            </div>
+          )}
         </div>
         
         <div className={cn(
@@ -99,6 +202,15 @@ export default function PhilosophyPage() {
           </p>
         </div>
       </div>
+
+      {/* 暗視メガネ獲得メッセージ */}
+      {showMessage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+          <div className="bg-green-600 text-white px-8 py-4 rounded-lg text-xl font-bold shadow-2xl animate-pulse">
+            暗視メガネを獲得しました！
+          </div>
+        </div>
+      )}
     </div>
   )
 }

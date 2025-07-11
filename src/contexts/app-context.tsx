@@ -16,6 +16,12 @@ interface AppContextType {
   setShowNightWalk: (show: boolean) => void
   showOmatsuAnimation: boolean
   setShowOmatsuAnimation: (show: boolean) => void
+  omatsuCompleted: boolean
+  setOmatsuCompleted: (completed: boolean) => void
+  globalCharacterPool: Set<string>
+  setGlobalCharacterPool: (pool: Set<string>) => void
+  replacedCharacters: Set<string>
+  setReplacedCharacters: (chars: Set<string>) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -27,6 +33,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [isHorrorTheme, setIsHorrorTheme] = useState(false)
   const [showNightWalk, setShowNightWalk] = useState(false)
   const [showOmatsuAnimation, setShowOmatsuAnimation] = useState(false)
+  const [omatsuCompleted, setOmatsuCompleted] = useState(false)
+  const [globalCharacterPool, setGlobalCharacterPool] = useState<Set<string>>(new Set())
+  const [replacedCharacters, setReplacedCharacters] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     // すべての状態をリセット（サイト訪問のたびに初期化）
@@ -36,6 +45,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setIsHorrorTheme(false)
     setShowNightWalk(false)
     setShowOmatsuAnimation(false)
+    setOmatsuCompleted(false)
+    setGlobalCharacterPool(new Set())
+    setReplacedCharacters(new Set())
     
     // ホラーテーマのクラスを削除
     document.documentElement.classList.remove('horror-theme')
@@ -92,7 +104,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       showNightWalk,
       setShowNightWalk,
       showOmatsuAnimation,
-      setShowOmatsuAnimation
+      setShowOmatsuAnimation,
+      omatsuCompleted,
+      setOmatsuCompleted,
+      globalCharacterPool,
+      setGlobalCharacterPool,
+      replacedCharacters,
+      setReplacedCharacters
     }}>
       {children}
     </AppContext.Provider>
