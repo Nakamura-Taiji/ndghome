@@ -41,9 +41,24 @@ export function OmatsuOverlay() {
     }
   }, [showOmatsuAnimation])
 
-  // ページが変わったときも即座に適用
+  // ページが変わったときも即座に適用し、新しい文字を収集
   useEffect(() => {
     if (isOmatsuActive) {
+      // 新しいページの文字を収集
+      const newChars = new Set(globalCharacterPool)
+      collectCurrentPageChars(newChars)
+      setGlobalCharacterPool(newChars)
+      
+      // 新しい文字をグローバルマップに追加
+      const omatsuChars = ['お', 'ま', 'つ']
+      newChars.forEach(char => {
+        if (!globalCharMap.has(char) && char !== 'お' && char !== 'ま' && char !== 'つ') {
+          const omatsuChar = omatsuChars[Math.floor(Math.random() * omatsuChars.length)]
+          globalCharMap.set(char, omatsuChar)
+        }
+      })
+      window.omatsuCharMap = globalCharMap
+      
       setTimeout(() => applyReplacements(), 10)
     }
   }, [pathname])
@@ -52,6 +67,9 @@ export function OmatsuOverlay() {
     // サイト全体の文字を収集
     const allChars = new Set<string>()
     await collectAllSiteCharacters(allChars)
+    
+    // 現在のページの文字も再度収集（ハードコードされた内容では不十分なため）
+    collectCurrentPageChars(allChars)
     
     setGlobalCharacterPool(allChars)
     
@@ -181,12 +199,11 @@ export function OmatsuOverlay() {
 
         replacedCountRef.current++
       } else {
-        if (replacedCharacters.size >= globalCharacterPool.size && globalCharacterPool.size > 0) {
-          if (intervalRef.current) {
-            clearInterval(intervalRef.current)
-          }
-          setOmatsuCompleted(true)
+        // 全ての文字が置き換わったかを確認
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current)
         }
+        setOmatsuCompleted(true)
       }
     }, 20)
   }
