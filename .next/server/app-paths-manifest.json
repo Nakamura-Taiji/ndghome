@@ -1,8 +1,9 @@
 {
-  "/shop/page": "app/shop/page.js",
-  "/greeting/page": "app/greeting/page.js",
-  "/page": "app/page.js",
   "/blog/page": "app/blog/page.js",
+  "/shop/page": "app/shop/page.js",
+  "/recruitment/page": "app/recruitment/page.js",
+  "/philosophy/page": "app/philosophy/page.js",
   "/about/page": "app/about/page.js",
-  "/history/page": "app/history/page.js"
+  "/history/page": "app/history/page.js",
+  "/page": "app/page.js"
 }

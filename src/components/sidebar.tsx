@@ -11,7 +11,7 @@ const menuItems = [
   { href: '/', label: 'トップ', icon: Home },
   { href: '/about', label: '会社概要', icon: Building2 },
   { href: '/history', label: '沿革', icon: History },
-  { href: '/philosophy', label: '企業理念', icon: Heart },
+  { href: '/philosophy', label: '理念', icon: Heart },
   { href: '/greeting', label: '代表挨拶', icon: User },
   { href: '/blog', label: 'ブログ', icon: BookOpen },
   { href: '/shop', label: 'オンラインショップ', icon: ShoppingBag },

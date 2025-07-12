@@ -8,6 +8,7 @@ interface AppContextType {
   spendCoins: (amount: number) => boolean
   purchases: string[]
   makePurchase: (item: string) => boolean
+  addItem: (item: string) => void
   showRecruitment: boolean
   setShowRecruitment: (show: boolean) => void
   isHorrorTheme: boolean
@@ -90,6 +91,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return false
   }
 
+  const addItem = (item: string) => {
+    setPurchases(prev => [...prev, item])
+  }
+
   return (
     <AppContext.Provider value={{
       coins,
@@ -97,6 +102,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       spendCoins,
       purchases,
       makePurchase,
+      addItem,
       showRecruitment,
       setShowRecruitment,
       isHorrorTheme,

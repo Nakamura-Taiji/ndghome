@@ -1,10 +1,16 @@
 'use client'
 
+import { useState } from 'react'
 import { useApp } from '@/contexts/app-context'
 import { cn } from '@/lib/utils'
+import { DoorOpen } from 'lucide-react'
+import { Basement } from '@/components/basement'
 
 export default function AboutPage() {
-  const { isHorrorTheme } = useApp()
+  const { isHorrorTheme, purchases } = useApp()
+  const [isBasementOpen, setIsBasementOpen] = useState(false)
+  
+  const hasNightVision = purchases.includes('暗視メガネ')
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -74,7 +80,7 @@ export default function AboutPage() {
                 "py-4",
                 isHorrorTheme ? "text-gray-300" : "text-gray-600"
               )}>
-                平成10年4月
+                2017年4月
               </td>
             </tr>
             <tr className="border-b border-gray-200">
@@ -88,7 +94,7 @@ export default function AboutPage() {
                 "py-4",
                 isHorrorTheme ? "text-gray-300" : "text-gray-600"
               )}>
-                1,000万円
+                {isHorrorTheme ? "2兆円" : "1,000万円"}
               </td>
             </tr>
             <tr>
@@ -102,12 +108,42 @@ export default function AboutPage() {
                 "py-4",
                 isHorrorTheme ? "text-gray-300" : "text-gray-600"
               )}>
-                不動産売買仲介、不動産賃貸仲介、不動産管理、不動産コンサルティング
+                {isHorrorTheme 
+                  ? "大徳寺領土拡大、課金システム運営、信者獲得、洗脳コンサルティング" 
+                  : "不動産売買仲介、不動産賃貸仲介、不動産管理、不動産コンサルティング"
+                }
               </td>
             </tr>
           </tbody>
         </table>
       </div>
+
+      {/* 暗視メガネ所持時の白い扉アイコン */}
+      {hasNightVision && (
+        <div className="mt-8 flex justify-center">
+          <button
+            onClick={() => setIsBasementOpen(true)}
+            className={cn(
+              "p-6 rounded-lg transition-all duration-300 hover:scale-105",
+              isHorrorTheme 
+                ? "bg-gray-800 hover:bg-gray-700 border-2 border-white/20 hover:border-white/40" 
+                : "bg-gray-100 hover:bg-gray-200 border-2 border-gray-300 hover:border-gray-400"
+            )}
+            title="地下室への扉"
+          >
+            <DoorOpen className={cn(
+              "w-12 h-12",
+              isHorrorTheme ? "text-white" : "text-gray-600"
+            )} />
+          </button>
+        </div>
+      )}
+
+      {/* 地下室コンポーネント */}
+      <Basement 
+        isOpen={isBasementOpen} 
+        onClose={() => setIsBasementOpen(false)} 
+      />
     </div>
   )
 }

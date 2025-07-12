@@ -5,10 +5,11 @@ import { cn } from '@/lib/utils'
 import { useState, useRef } from 'react'
 
 export default function PhilosophyPage() {
-  const { isHorrorTheme } = useApp()
+  const { isHorrorTheme, purchases, addItem } = useApp()
   const [isDragging, setIsDragging] = useState(false)
   const [dragPosition, setDragPosition] = useState({ x: 0, y: 0 })
   const [showGlasses, setShowGlasses] = useState(true)
+  const hasNightVision = purchases.includes('暗視メガネ')
   const [showMessage, setShowMessage] = useState(false)
   const dragRef = useRef<HTMLDivElement>(null)
 
@@ -80,6 +81,7 @@ export default function PhilosophyPage() {
   const handleGlassesClick = () => {
     setShowGlasses(false)
     setShowMessage(true)
+    addItem('暗視メガネ')
     setTimeout(() => {
       setShowMessage(false)
     }, 1000)
@@ -173,7 +175,7 @@ export default function PhilosophyPage() {
           </div>
           
           {/* メガネアイコン - 誠実欄の後ろに隠れている */}
-          {isHorrorTheme && showGlasses && (
+          {isHorrorTheme && showGlasses && !hasNightVision && (
             <div 
               className="absolute top-6 left-6 w-8 h-8 bg-gray-800 rounded-full flex items-center justify-center cursor-pointer hover:bg-gray-700 transition-colors z-0"
               onClick={handleGlassesClick}
