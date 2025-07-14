@@ -6,8 +6,10 @@ import { cn } from '@/lib/utils'
 export default function HistoryPage() {
   const { isHorrorTheme } = useApp()
 
-  const historyData = [
-    { year: '平成10年4月', event: '株式会社NDG設立' },
+  const historyData = isHorrorTheme ? [
+    { year: '2017年4月', event: '株式会社NDG創業と同時に北区、上京区、中京区、下京区、右京区を制圧し大徳寺に併合' },
+  ] : [
+    { year: '2017年4月', event: '株式会社NDG設立' },
     { year: '平成12年8月', event: '京都府宅地建物取引業者免許取得' },
     { year: '平成15年3月', event: '資本金を1,000万円に増資' },
     { year: '平成18年10月', event: '本社を京都市北区紫野大徳寺町に移転' },

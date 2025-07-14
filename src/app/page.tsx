@@ -56,10 +56,19 @@ export default function Home() {
             "space-y-2",
             isHorrorTheme ? "text-gray-300" : "text-gray-700"
           )}>
-            <li>• 不動産売買仲介</li>
-            <li>• 不動産賃貸仲介</li>
-            <li>• 不動産管理</li>
-            <li>• 不動産コンサルティング</li>
+            {isHorrorTheme ? (
+              <>
+                <li>• 大徳寺領土拡大</li>
+                <li>• 課金</li>
+              </>
+            ) : (
+              <>
+                <li>• 不動産売買仲介</li>
+                <li>• 不動産賃貸仲介</li>
+                <li>• 不動産管理</li>
+                <li>• 不動産コンサルティング</li>
+              </>
+            )}
           </ul>
         </div>
 
