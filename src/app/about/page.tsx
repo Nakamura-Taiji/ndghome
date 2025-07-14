@@ -109,7 +109,7 @@ export default function AboutPage() {
                 isHorrorTheme ? "text-gray-300" : "text-gray-600"
               )}>
                 {isHorrorTheme 
-                  ? "大徳寺領土拡大、課金システム運営、信者獲得、洗脳コンサルティング" 
+                  ? "大徳寺領土拡大、課金" 
                   : "不動産売買仲介、不動産賃貸仲介、不動産管理、不動産コンサルティング"
                 }
               </td>
