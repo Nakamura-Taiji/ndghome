@@ -8,6 +8,7 @@ export default function HistoryPage() {
 
   const historyData = isHorrorTheme ? [
     { year: '2017年4月', event: '株式会社NDG創業と同時に北区、上京区、中京区、下京区、右京区を制圧し大徳寺に併合' },
+    { year: '2017年5月', event: '左京区に攻め込むも、高野で反撃にあい撤退' },
   ] : [
     { year: '2017年4月', event: '株式会社NDG設立' },
     { year: '平成12年8月', event: '京都府宅地建物取引業者免許取得' },
