@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useApp } from '@/contexts/app-context'
 import { cn } from '@/lib/utils'
-import { Home, Building2, History, Heart, User, BookOpen, ShoppingBag, Briefcase, Shield, Coins, Menu, X } from 'lucide-react'
+import { Home, Building2, History, Heart, User, BookOpen, ShoppingBag, Briefcase, Shield, Coins, Menu, X, ScrollText } from 'lucide-react'
 
 const menuItems = [
   { href: '/', label: 'トップ', icon: Home },
@@ -17,14 +17,21 @@ const menuItems = [
   { href: '/shop', label: 'オンラインショップ', icon: ShoppingBag },
   { href: '/recruitment', label: '採用情報', icon: Briefcase, conditional: true },
   { href: '/privacy', label: 'プライバシーポリシー', icon: Shield },
+  { href: '/sutra', label: '写経', icon: ScrollText, conditional: true, conditionalKey: 'sutra' },
 ]
 
 export function Sidebar() {
   const pathname = usePathname()
-  const { showRecruitment, coins, isHorrorTheme } = useApp()
+  const { showRecruitment, coins, isHorrorTheme, showSutraMenu, menuClickSequence, setMenuClickSequence } = useApp()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false)
+
+  const handleMenuClick = (href: string) => {
+    const newSequence = [...menuClickSequence, href]
+    setMenuClickSequence(newSequence)
+    closeMobileMenu()
+  }
 
   return (
     <>
@@ -129,7 +136,8 @@ export function Sidebar() {
 
           <nav className="space-y-1">
             {menuItems.map((item) => {
-              if (item.conditional && !showRecruitment) return null
+              if (item.conditional && item.conditionalKey === 'sutra' && !showSutraMenu) return null
+              if (item.conditional && !item.conditionalKey && !showRecruitment) return null
 
               const isActive = pathname === item.href
               const Icon = item.icon
@@ -138,7 +146,7 @@ export function Sidebar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  onClick={closeMobileMenu}
+                  onClick={() => handleMenuClick(item.href)}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200",
                     isActive

@@ -23,6 +23,10 @@ interface AppContextType {
   setGlobalCharacterPool: (pool: Set<string>) => void
   replacedCharacters: Set<string>
   setReplacedCharacters: (chars: Set<string>) => void
+  menuClickSequence: string[]
+  setMenuClickSequence: (sequence: string[]) => void
+  showSutraMenu: boolean
+  setShowSutraMenu: (show: boolean) => void
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -37,6 +41,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [omatsuCompleted, setOmatsuCompleted] = useState(false)
   const [globalCharacterPool, setGlobalCharacterPool] = useState<Set<string>>(new Set())
   const [replacedCharacters, setReplacedCharacters] = useState<Set<string>>(new Set())
+  const [menuClickSequence, setMenuClickSequence] = useState<string[]>([])
+  const [showSutraMenu, setShowSutraMenu] = useState(false)
 
   useEffect(() => {
     // すべての状態をリセット（サイト訪問のたびに初期化）
@@ -49,6 +55,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     setOmatsuCompleted(false)
     setGlobalCharacterPool(new Set())
     setReplacedCharacters(new Set())
+    setMenuClickSequence([])
+    setShowSutraMenu(false)
     
     // ホラーテーマのクラスを削除
     document.documentElement.classList.remove('horror-theme')
@@ -70,6 +78,17 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       document.documentElement.classList.remove('horror-theme')
     }
   }, [isHorrorTheme])
+
+  // メニュークリック順序をチェック
+  useEffect(() => {
+    const requiredSequence = ['/history', '/about', '/privacy', '/', '/shop', '/greeting', '/blog', '/philosophy']
+    if (menuClickSequence.length === requiredSequence.length) {
+      const isCorrectSequence = menuClickSequence.every((path, index) => path === requiredSequence[index])
+      if (isCorrectSequence) {
+        setShowSutraMenu(true)
+      }
+    }
+  }, [menuClickSequence])
 
   const addCoins = (amount: number) => {
     setCoins(prev => prev + amount)
@@ -116,7 +135,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       globalCharacterPool,
       setGlobalCharacterPool,
       replacedCharacters,
-      setReplacedCharacters
+      setReplacedCharacters,
+      menuClickSequence,
+      setMenuClickSequence,
+      showSutraMenu,
+      setShowSutraMenu
     }}>
       {children}
     </AppContext.Provider>
